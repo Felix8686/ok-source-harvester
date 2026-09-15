@@ -1,29 +1,37 @@
 # Roadmap
 
-## Phase 0 — Bootstrap
+## Phase 0 — Bootstrap — COMPLETE
 
-Engineering skeleton, domain contracts, configuration, storage boundary, tests, CI, and architecture documentation.
+- Package layout, domain models, configuration, SQLite schema, CI, tests, architecture docs.
 
-## Phase 1 — GitHub active discovery
+## Phase 1 — GitHub active discovery — IMPLEMENTED / VERIFYING
 
-Discover public candidate configuration URLs from GitHub, normalize URLs, deduplicate candidates, preserve provenance, implement rate-limit-aware incremental collection, and persist results.
+- Authenticated GitHub code search when a token is available.
+- Tokenless repository search and README/candidate-file scanning fallback.
+- Source URL extraction and canonicalization.
+- Candidate deduplication while preserving multiple discovery origins.
+- SQLite collector state for overlap-safe incremental repository searches.
+- Rate-limit reserve protection; never sleep indefinitely waiting for GitHub reset.
 
 ## Phase 2 — Public web discovery
 
-Crawl an allowlisted/seeded public web frontier, extract candidate URLs, constrain crawl scope, and reuse the same dedup/provenance path.
+- Seed discovery and bounded crawling of ordinary public pages.
+- Domain throttling, robots/policy handling, content extraction, provenance.
 
-## Phase 3 — OK影视/TVBox validator
+## Phase 3 — OK影视 / TVBox validation
 
-Implement progressive HTTP/config/feature/API/search/detail/playback validation with retry and failure classification.
+- HTTP reachability and response classification.
+- Config structure and feature detection.
+- Site/search/detail/playback probes.
 
 ## Phase 4 — Scoring and lifecycle
 
-Calculate quality/reliability scores, distinguish degraded from dead sources, schedule rechecks, and retire persistently invalid candidates without losing history.
+- Reliability history, latency, failure decay, retry/quarantine policy.
 
 ## Phase 5 — Export
 
-Generate deterministic valid-source outputs suitable for downstream OK影视 usage, with freshness metadata and safe atomic publication.
+- Stable ranked source list and machine-consumable subscription output.
 
-## Phase 6 — Discovery expansion
+## Phase 6 — Extended discovery
 
-Evaluate Telegram public channels, public forums, and search-engine discovery based on coverage gained versus maintenance cost.
+- Public Telegram channels, forums and search-engine discovery where policy and access permit.

@@ -2,32 +2,27 @@
 
 ## Current phase
 
-Phase 0 bootstrap implemented on `dev/bootstrap`.
+Phase 1 GitHub active discovery implemented on `dev/phase1-github-discovery`; awaiting clean CI and runtime verification.
 
 ## Implemented
 
-- Python package and development tooling.
-- Domain models for candidates, discoveries, validation history, and lifecycle status.
-- Collector and Validator extension boundaries.
-- GitHub/Web collector placeholders only; no real harvesting logic yet.
-- Repository protocol and SQLite schema bootstrap.
-- Environment-based configuration with nested collector/validator settings.
-- Unit tests for domain defaults, configuration, imports, and SQLite schema.
-- CI definition for lint, type check, and tests.
-- Architecture decisions and phased roadmap.
+- GitHub authenticated code search plus tokenless repository-search fallback.
+- README and bounded candidate-file scanning.
+- Context-aware source URL extraction with GitHub blob-to-raw canonicalization.
+- Candidate deduplication with multiple provenance records preserved.
+- Full SQLite candidate/discovery operations and collector state.
+- Incremental repository query overlap based on last successful run.
+- GitHub rate-limit reserve protection.
+- `python -m ok_source_harvester discover-github` CLI entry point.
+- Unit tests for extraction, persistence, collector modes and pipeline deduplication.
+
+## Safety / scope
+
+- Only public GitHub content is read.
+- No credentials are persisted in source control.
+- No discovered real source addresses are committed to the repository.
+- Phase 1 discovers candidates but does not claim they are valid; validation belongs to Phase 3.
 
 ## Next entry point
 
-Phase 1 should implement GitHub active discovery without changing the public Collector contract unless implementation evidence requires it. It should add URL canonicalization/dedup persistence and rate-limit-aware incremental state.
-
-## Verification expected on a real environment
-
-```bash
-python -m venv .venv
-pip install -e ".[dev]"
-ruff check .
-mypy src
-pytest
-```
-
-Do not merge to `main` until those checks pass in a clean environment.
+After CI and a real GitHub run pass, Phase 2 can add ordinary public-web discovery while keeping the existing Collector contract.

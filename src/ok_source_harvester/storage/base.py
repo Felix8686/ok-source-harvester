@@ -4,7 +4,13 @@ from uuid import UUID
 from ok_source_harvester.domain import DiscoveryRecord, SourceCandidate, ValidationRecord
 
 
-class Repository(Protocol):
+class CollectorStateStore(Protocol):
+    def get_collector_state(self, collector_name: str, key: str) -> str | None: ...
+
+    def set_collector_state(self, collector_name: str, key: str, value: str) -> None: ...
+
+
+class Repository(CollectorStateStore, Protocol):
     """Persistence boundary; implementations may be SQLite, PostgreSQL, or another store."""
 
     def initialize(self) -> None: ...
