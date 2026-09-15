@@ -4,7 +4,12 @@ from datetime import datetime
 from pathlib import Path
 from uuid import UUID
 
-from ok_source_harvester.domain import DiscoveryRecord, SourceCandidate, SourceStatus, ValidationRecord
+from ok_source_harvester.domain import (
+    DiscoveryRecord,
+    SourceCandidate,
+    SourceStatus,
+    ValidationRecord,
+)
 
 
 class SQLiteRepository:

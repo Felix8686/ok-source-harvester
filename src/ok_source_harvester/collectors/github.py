@@ -45,7 +45,11 @@ class GitHubCollector(Collector):
     async def collect(self) -> AsyncIterator[DiscoveryItem]:
         started_at = datetime.now(UTC)
         if self.state_store is not None:
-            self.state_store.set_collector_state(self.name, "last_attempt_at", started_at.isoformat())
+            self.state_store.set_collector_state(
+                self.name,
+                "last_attempt_at",
+                started_at.isoformat(),
+            )
 
         if self.client is not None:
             async for item in self._collect(self.client):
@@ -61,7 +65,11 @@ class GitHubCollector(Collector):
                     yield item
 
         if self.state_store is not None and not self.rate_limited:
-            self.state_store.set_collector_state(self.name, "last_success_at", started_at.isoformat())
+            self.state_store.set_collector_state(
+                self.name,
+                "last_success_at",
+                started_at.isoformat(),
+            )
 
     def _headers(self) -> dict[str, str]:
         headers = {
@@ -114,7 +122,11 @@ class GitHubCollector(Collector):
                         fragments = [content] if content else []
                 for fragment in fragments:
                     for candidate in extract_candidate_urls(fragment):
-                        yield DiscoveryItem(candidate, self.name, origin_url or "github-code-search")
+                        yield DiscoveryItem(
+                            candidate,
+                            self.name,
+                            origin_url or "github-code-search",
+                        )
                 if self.rate_limited:
                     return
             if len(items) < self.settings.per_page:
@@ -152,7 +164,10 @@ class GitHubCollector(Collector):
                 if not full_name:
                     continue
                 async for item in self._scan_repository(
-                    client, full_name=full_name, default_branch=default_branch, origin_url=html_url
+                    client,
+                    full_name=full_name,
+                    default_branch=default_branch,
+                    origin_url=html_url,
                 ):
                     yield item
                 if self.rate_limited:

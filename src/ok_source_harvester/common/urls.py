@@ -50,7 +50,8 @@ def canonicalize_url(raw_url: str) -> str:
         port = parsed.port
     except ValueError as exc:
         raise ValueError("invalid URL port") from exc
-    if port is not None and not ((scheme == "http" and port == 80) or (scheme == "https" and port == 443)):
+    is_default_port = (scheme == "http" and port == 80) or (scheme == "https" and port == 443)
+    if port is not None and not is_default_port:
         netloc = f"{hostname}:{port}"
     else:
         netloc = hostname
