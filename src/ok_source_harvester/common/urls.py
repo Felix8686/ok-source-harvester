@@ -99,8 +99,12 @@ def extract_candidate_urls(text: str, context_radius: int = 180) -> Iterator[str
     seen: set[str] = set()
     for match in _URL_RE.finditer(text):
         raw_url = match.group(0).rstrip(_TRAILING_PUNCTUATION)
-        start = max(0, match.start() - context_radius)
-        end = min(len(text), match.end() + context_radius)
+        line_start = text.rfind("\n", 0, match.start()) + 1
+        line_end = text.find("\n", match.end())
+        if line_end == -1:
+            line_end = len(text)
+        start = max(line_start, match.start() - context_radius)
+        end = min(line_end, match.end() + context_radius)
         context = text[start:end]
         try:
             canonical = canonicalize_url(raw_url)

@@ -21,7 +21,7 @@ class GitHubCollector(Collector):
 
     def __init__(
         self,
-        settings: GitHubCollectorSettings,
+        settings: GitHubCollectorSettings | None = None,
         *,
         token: str | None = None,
         user_agent: str = "ok-source-harvester/0.1",
@@ -29,7 +29,7 @@ class GitHubCollector(Collector):
         state_store: CollectorStateStore | None = None,
         client: httpx.AsyncClient | None = None,
     ) -> None:
-        self.settings = settings
+        self.settings = settings or GitHubCollectorSettings()
         self.token = token or None
         self.user_agent = user_agent
         self.timeout_seconds = timeout_seconds
