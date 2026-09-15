@@ -1,0 +1,20 @@
+from typing import Protocol
+from uuid import UUID
+
+from ok_source_harvester.domain import DiscoveryRecord, SourceCandidate, ValidationRecord
+
+
+class Repository(Protocol):
+    """Persistence boundary; implementations may be SQLite, PostgreSQL, or another store."""
+
+    def initialize(self) -> None: ...
+
+    def upsert_candidate(self, candidate: SourceCandidate) -> SourceCandidate: ...
+
+    def get_candidate_by_url(self, canonical_url: str) -> SourceCandidate | None: ...
+
+    def add_discovery(self, record: DiscoveryRecord) -> None: ...
+
+    def add_validation(self, record: ValidationRecord) -> None: ...
+
+    def list_validations(self, source_candidate_id: UUID) -> list[ValidationRecord]: ...
